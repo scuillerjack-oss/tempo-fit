@@ -1,0 +1,18 @@
+{
+  "name": "tempo-fit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TEMPO FIT V0 — séances sportives courtes à domicile, site responsive + PWA",
+  "type": "module",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "test": "node --test \"tests/unit/*.test.mjs\"",
+    "test:e2e": "node scripts/build.mjs && node --test --test-concurrency=1 \"tests/e2e/*.test.mjs\"",
+    "plan:export": "node scripts/export-plan.mjs"
+  }
+}

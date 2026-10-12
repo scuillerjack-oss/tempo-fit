@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>TEMPO FIT · Séances courtes à la maison</title>
+  <meta name="description" content="Séances sportives courtes à la maison, sans matériel : plan de 12 semaines, 3 niveaux (10, 20, 30 min), séances guidées avec minuteur. Bêta gratuite.">
+  <meta name="theme-color" content="#0f766e">
+  <meta name="color-scheme" content="light dark">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="TEMPO FIT">
+  <link rel="stylesheet" href="css/app.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#app">Aller au contenu</a>
+  <header class="site-header">
+    <a class="brand" href="#/" aria-label="TEMPO FIT, accueil">
+      <img src="icons/favicon.svg" alt="" width="28" height="28"> <span>TEMPO FIT</span> <span class="beta">bêta</span>
+    </a>
+    <nav class="top-nav" aria-label="Navigation principale">
+      <a href="#/" data-nav="home">Accueil</a>
+      <a href="#/plan" data-nav="plan">Mon plan</a>
+      <a href="#/exercices" data-nav="exercices">Exercices</a>
+      <a href="#/progres" data-nav="progres">Progression</a>
+      <a href="#/tarifs">Tarifs</a>
+    </nav>
+  </header>
+
+  <div id="update-banner" class="update-banner" role="status" hidden>
+    Une nouvelle version est disponible. <button class="btn btn-sm btn-primary" type="button">Mettre à jour</button>
+  </div>
+
+  <main id="app" class="container" tabindex="-1">
+    <noscript>
+      <h1>TEMPO FIT</h1>
+      <p>JavaScript est nécessaire pour utiliser les séances guidées. Activez-le dans votre navigateur puis rechargez la page.</p>
+    </noscript>
+  </main>
+
+  <footer class="site-footer">
+    <nav aria-label="Informations">
+      <a href="#/securite">Sécurité</a>
+      <a href="#/confidentialite">Confidentialité</a>
+      <a href="#/mentions-legales">Mentions légales</a>
+      <a href="#/tarifs">Tarifs</a>
+      <a href="#/reglages">Réglages</a>
+    </nav>
+    <p>TEMPO FIT (nom provisoire) · bêta gratuite · contenus à valider par un professionnel avant commercialisation · <span id="build-version"></span></p>
+  </footer>
+
+  <nav class="tab-bar" aria-label="Navigation rapide">
+    <a href="#/" data-nav="home"><span aria-hidden="true">⌂</span>Accueil</a>
+    <a href="#/plan" data-nav="plan"><span aria-hidden="true">▦</span>Plan</a>
+    <a href="#/exercices" data-nav="exercices"><span aria-hidden="true">☰</span>Exercices</a>
+    <a href="#/progres" data-nav="progres"><span aria-hidden="true">↗</span>Progrès</a>
+  </nav>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>
