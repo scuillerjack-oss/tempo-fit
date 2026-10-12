@@ -1,0 +1,116 @@
+# Déploiement de TEMPO FIT sur Cloudflare Pages avec Wrangler (outil officiel Cloudflare),
+# sans dépendre de l'intégration GitHub de Cloudflare.
+# Secrets requis (GitHub → Settings → Secrets and variables → Actions) :
+#   CLOUDFLARE_API_TOKEN   jeton limité à « Account → Cloudflare Pages → Edit »
+#   CLOUDFLARE_ACCOUNT_ID  identifiant du compte Cloudflare (non secret, mais rangé ici par simplicité)
+# Sans ces secrets, le workflow s'arrête proprement sans rien déployer.
+name: Déploiement Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cloudflare-pages-production
+  cancel-in-progress: false
+
+env:
+  PROJECT_NAME: tempo-fit
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Vérifier la présence des secrets Cloudflare
+        id: secrets
+        env:
+          TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -n "$TOKEN" ] && [ -n "$ACCOUNT" ]; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Secrets CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID absents : aucun déploiement (voir docs/DEPLOIEMENT.md)."
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.secrets.outputs.ok == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.secrets.outputs.ok == 'true'
+        with:
+          node-version: 22
+
+      - name: Tests unitaires
+        if: steps.secrets.outputs.ok == 'true'
+        run: npm test
+
+      - name: Build (dist/)
+        if: steps.secrets.outputs.ok == 'true'
+        env:
+          CF_PAGES_COMMIT_SHA: ${{ github.sha }}
+          CF_PAGES_BRANCH: ${{ github.ref_name }}
+        run: npm run build
+
+      - name: Créer le projet Pages s'il n'existe pas (offre gratuite)
+        if: steps.secrets.outputs.ok == 'true'
+        continue-on-error: true
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: '4.149.0'
+          command: pages project create ${{ env.PROJECT_NAME }} --production-branch=main
+
+      - name: Déployer sur Cloudflare Pages
+        id: deploy
+        if: steps.secrets.outputs.ok == 'true'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: '4.149.0'
+          command: pages deploy dist --project-name=${{ env.PROJECT_NAME }} --branch=main --commit-hash=${{ github.sha }} --commit-dirty=true
+
+      - name: Vérifier le site public (commit, PWA, en-têtes)
+        if: steps.secrets.outputs.ok == 'true'
+        env:
+          DEPLOY_URL: ${{ steps.deploy.outputs.deployment-url }}
+          EXPECTED: ${{ github.sha }}
+        run: |
+          set -u
+          # URL de déploiement : https://<id>.<sous-domaine>.pages.dev → production : https://<sous-domaine>.pages.dev
+          if [ -n "${DEPLOY_URL:-}" ]; then PROD="https://${DEPLOY_URL#https://*.}"; else PROD="https://${PROJECT_NAME}.pages.dev"; fi
+          echo "URL du déploiement : ${DEPLOY_URL:-inconnue}"
+          echo "URL de production   : $PROD"
+          check() { # url attendu_type
+            code=$(curl -sS -o /dev/null -w '%{http_code} %{content_type}' "$1")
+            echo "$1 -> $code"
+            case "$code" in 200*"$2"*) ;; *) echo "::error::$1 ne répond pas correctement ($code)"; return 1;; esac
+          }
+          # La propagation peut prendre quelques secondes.
+          for i in $(seq 1 30); do
+            got=$(curl -sS "$PROD/version.json" | sed -n 's/.*"commit": *"\([0-9a-f]*\)".*/\1/p' || true)
+            [ "$got" = "$EXPECTED" ] && break
+            sleep 10
+          done
+          echo "Commit servi : ${got:-aucun} / attendu : $EXPECTED"
+          [ "$got" = "$EXPECTED" ] || { echo "::error::Le site de production ne sert pas le commit attendu"; exit 1; }
+          check "$PROD/" "text/html"
+          check "$PROD/manifest.webmanifest" "manifest"
+          check "$PROD/sw.js" "javascript"
+          check "$PROD/js/app.js" "javascript"
+          check "$PROD/css/app.css" "text/css"
+          check "$PROD/icons/icon-192.png" "image/png"
+          check "$PROD/icons/icon-512.png" "image/png"
+          check "$PROD/icons/icon-maskable-512.png" "image/png"
+          curl -sSI "$PROD/" | grep -i '^content-security-policy:' || { echo "::error::En-tête CSP absent"; exit 1; }
+          echo "### TEMPO FIT déployé" >> "$GITHUB_STEP_SUMMARY"
+          echo "- URL : $PROD" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Commit servi : \`$got\`" >> "$GITHUB_STEP_SUMMARY"

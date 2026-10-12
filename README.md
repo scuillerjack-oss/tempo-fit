@@ -91,7 +91,7 @@ Chaque push sur `main` redéploie automatiquement. Le commit réellement en lign
 - en bas de chaque page (« Version xxxxxxx ») ;
 - à l'adresse `https://<projet>.pages.dev/version.json`.
 
-Procédure détaillée, première connexion et Stripe test : [`docs/DEPLOIEMENT.md`](docs/DEPLOIEMENT.md).
+Méthode utilisée : Wrangler via GitHub Actions (`.github/workflows/deploy-cloudflare-pages.yml`), redéploiement automatique à chaque push sur `main`. Procédure détaillée, secrets à créer et Stripe test : [`docs/DEPLOIEMENT.md`](docs/DEPLOIEMENT.md).
 
 ## Reprise et restauration
 
