@@ -9,8 +9,8 @@ La V0 est un site web statique responsive, installable comme PWA, qui propose tr
 | Élément | État |
 |---|---|
 | Application (code, tests, documentation) | Terminée, testée (54 tests unitaires + 13 tests navigateur, tous réussis) |
-| Dépôt GitHub `scuillerjack-oss/tempo-fit` | À créer par le propriétaire (droit refusé à l'intégration), puis push par Claude |
-| Cloudflare Pages | À connecter par le propriétaire (procédure : `DEPLOIEMENT.md`) |
+| Dépôt GitHub `scuillerjack-oss/tempo-fit` | Créé par le propriétaire (public), code poussé sur `main` ; audit : aucun secret, auteur des commits anonymisé |
+| Cloudflare Pages | À connecter par le propriétaire (procédure : `DEPLOIEMENT.md`) ; commit en ligne vérifiable sur `/version.json` |
 | Contenu sportif | Rédigé, **à faire relire par un professionnel** |
 | Paiement | Non activé ; Stripe test facultatif, sans déverrouillage |
 
