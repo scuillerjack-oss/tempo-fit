@@ -17,7 +17,7 @@ export function renderPrograms(ctx) {
   }).join('');
   ctx.root.innerHTML = `<h1>Les programmes</h1>
     <p class="lead">Chaque parcours dure 12 semaines. Les séances, les jours de repos et la progression sont planifiés à l’avance.</p>
-    <div class="table-wrap"><table>
+    <div class="table-wrap" role="region" aria-label="Structure des trois parcours (défilable)" tabindex="0"><table>
       <caption>Structure des trois parcours</caption>
       <thead><tr><th scope="col">Niveau</th><th scope="col">Durée</th><th scope="col">Séances / semaine</th><th scope="col">Échauffement</th><th scope="col">Corps de séance</th><th scope="col">Effort</th></tr></thead>
       <tbody>${rows}</tbody>

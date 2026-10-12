@@ -301,7 +301,7 @@ img {
 }
 .btn-xl {
   min-height: 64px;
-  min-width: 9em;
+  min-width: 7em;
   font-size: 1.25rem;
 }
 .btn-sm {
@@ -740,7 +740,10 @@ body.immersive {
   align-items: center;
   justify-content: center;
   margin: 20px 0 8px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+}
+.runner-controls .btn-ghost {
+  padding: 10px 12px;
 }
 .runner-detail {
   width: 100%;
