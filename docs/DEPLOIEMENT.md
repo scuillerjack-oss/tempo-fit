@@ -11,7 +11,7 @@ L'intégration GitHub de Claude n'a pas le droit de créer un dépôt sur le com
 
 1. Ouvrir https://github.com/new (connecté avec le compte `scuillerjack-oss`).
 2. **Owner** : `scuillerjack-oss` — **Repository name** : `tempo-fit`.
-3. Visibilité : **Private** (recommandé pour la bêta ; modifiable plus tard dans Settings).
+3. Visibilité : **Public** (choix du propriétaire). Conséquence : tout le code et l'historique sont lisibles par tous ; ne jamais y placer de clé, jeton ou mot de passe (les commits utilisent l'adresse e-mail anonyme GitHub `…@users.noreply.github.com`).
 4. **Ne cocher aucune option d'initialisation** (pas de README, pas de .gitignore, pas de licence) : le dépôt doit être vide.
 5. Cliquer **Create repository**.
 6. Si l'application GitHub « Claude » est installée sur « Only select repositories », ajouter `tempo-fit` à la liste :

@@ -2,7 +2,7 @@
 
 | Service | Usage | Offre | Coût V0 | Données traitées | À vérifier |
 |---|---|---|---|---|---|
-| GitHub | Dépôt du code `scuillerjack-oss/tempo-fit` | Gratuite (dépôt privé inclus) | 0 € | Code source | — |
+| GitHub | Dépôt du code `scuillerjack-oss/tempo-fit` | Gratuite (dépôt **public**) | 0 € | Code source, visible par tous | Ne jamais y placer de secret |
 | Cloudflare Pages | Hébergement HTTPS, build à chaque push | Gratuite | 0 € | Journaux techniques de l'hébergeur (IP, navigateur) | Limites et conditions d'usage commercial en vigueur |
 | Stripe | Facultatif, **mode test uniquement** | Compte gratuit | 0 € (commissions seulement sur paiements réels, inexistants en V0) | Aucune donnée tant que non utilisé | Tarifs, éligibilité, versements avant toute vente |
 | Nom de domaine | Non utilisé (`*.pages.dev`) | — | 0 € | — | Achat éventuel à décider plus tard |

@@ -108,3 +108,4 @@ Procédure détaillée, première connexion et Stripe test : [`docs/DEPLOIEMENT.
 - [Coûts et services](docs/COUTS_ET_SERVICES.md)
 - [Déploiement GitHub / Cloudflare / Stripe test](docs/DEPLOIEMENT.md)
 - [Programme complet](docs/PROGRAMME_COMPLET.md)
+- [Proposition de mode démonstration (prochaine version)](docs/MODE_DEMO_ADMIN.md)
